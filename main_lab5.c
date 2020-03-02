@@ -1,7 +1,7 @@
-/*
+//*
  * File:   main_lab6_master.c
- * Author: Arevalo
- *
+ * Author: Israel Arevalo
+ * Referencias: Se tomó como referencia el código de Pablo Mazariegos en Github
  * Created on 28 de febrero de 2020, 03:20 AM
  */
 
@@ -33,6 +33,7 @@
 #include "I2C.h"
 #include "LCD.h"
 
+//variables
 uint8_t pote;
 uint8_t foto;
 float pote_float;
@@ -43,6 +44,7 @@ uint8_t uni;
 uint8_t dec;
 uint8_t cont;
 
+//funciones prototipo
 void init(void);
 
 void main(void) {
@@ -50,7 +52,49 @@ void main(void) {
     iniciar_lcd();
     lcd_clear();
     lcd_cursor(1,1);
-    
+    I2C_Master_Init(100000);//Se inicializa la comunicación I2C por parte del maestro
+    while(1){
+        lcd_cursor(1,1);
+        lcd_escribir_string("POT   CONT  FOTO");
+        
+        //lectura del potenciometro
+        I2C_Master_Start();
+        I2C_Master_Write(0x81);
+        pote = I2C_Master_Read(0);
+        I2C_Master_Stop();
+        __delay_ms(10);
+        //impresion del valor del potenciometro
+        pote_float = pote * (5.0/255);
+        sprintf(res_pote, "%1.1f", pote_float);//se hace la conversión de binario a un intervalo entre 5 y 0
+        lcd_cursor(2,1);
+        lcd_escribir_string(res_pote);
+        
+        //lectura del contador
+        I2C_Master_Start();
+        I2C_Master_Write(0x11);
+        cont = I2C_Master_Read(0);
+        I2C_Master_Stop();
+        __delay_ms(10);
+        //impresion del contador
+        uni = (cont % 10) + 0x30;//se hace la conversión de binario a la unidad de un número entero
+        dec = (cont/10) + 0x30;//se hace la conversión de binario a la decena de un número entero
+        lcd_cursor(2,8);
+        lcd_escribir_char(uni);
+        lcd_cursor(2,9);
+        lcd_escribir_char(dec);
+        
+        //lectura de la foto
+        I2C_Master_Start();
+        I2C_Master_Write(0x71);
+        foto = I2C_Master_Read(0);
+        I2C_Master_Stop();
+        __delay_ms(10);
+        //impresion de la foto
+        foto_float = foto * (5.0/255);
+        sprintf(res_foto, "%1.1f", foto_float);//se hace la conversión de binario a un intervalo entre 5 y 0
+        lcd_cursor(2,14);
+        lcd_escribir_string(res_foto);
+    }
 }
 
 void init(void){
