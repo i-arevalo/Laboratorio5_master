@@ -1,10 +1,9 @@
 //*
- * File:   main_lab6_master.c
- * Author: Israel Arevalo
- * Referencias: Se tomó como referencia el código de Pablo Mazariegos en Github
- * Created on 28 de febrero de 2020, 03:20 AM
- *//
-
+// File:   main_lab6_master.c
+//* Author: Israel Arevalo
+//* Referencias: Se tomó como referencia el código de Pablo Mazariegos en Github
+//* Created on 28 de febrero de 2020, 03:20 AM
+//*
 #pragma config FOSC = INTRC_NOCLKOUT// Oscillator Selection bits (INTOSC oscillator: CLKOUT function on RA6/OSC2/CLKOUT pin, I/O function on RA7/OSC1/CLKIN)
 #pragma config WDTE = OFF       // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
 #pragma config PWRTE = OFF      // Power-up Timer Enable bit (PWRT disabled)
